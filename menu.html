@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="logo">CampusLink</div>
+</div>
+
+<div class="container">
+
+  <div class="panel">
+    <h3 id="res"></h3>
+    <div id="menu"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Your Cart</h3>
+    <div id="cart"></div>
+    <p id="total">Total: ₹0</p>
+    <button onclick="checkout()">Proceed to Checkout</button>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/order.js"></script>
+<script>
+const r = localStorage.getItem("restaurant");
+document.getElementById("res").textContent = r;
+
+restaurants[r].forEach(i => {
+  document.getElementById("menu").innerHTML +=
+    `<div class="option" onclick="addItem('${i.name}', ${i.price})">
+      ${i.name} - ₹${i.price}
+    </div>`;
+});
+</script>
+
+</body>
+</html>

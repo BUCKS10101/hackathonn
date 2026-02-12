@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Preview</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="center">
+
+<div class="card" id="preview"></div>
+
+<script>
+const o = JSON.parse(localStorage.getItem("activeDelivery"));
+
+document.getElementById("preview").innerHTML = `
+  <h3>${o.restaurant}</h3>
+  <p>Block: ${o.block}</p>
+  <p>Items: ${o.items}</p>
+  <p>Tip: ₹${o.tip}</p>
+  <button onclick="confirm()">Confirm Delivery</button>
+`;
+
+function confirm() {
+  window.location.href = "deliver-active.html";
+}
+</script>
+
+</body>
+</html>

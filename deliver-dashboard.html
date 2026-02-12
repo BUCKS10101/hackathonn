@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deliver Orders</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<<div class="navbar">
+  <div class="logo">CampusLink</div>
+
+  <div class="filter-bar">
+    <select>
+      <option>Sort by Tip</option>
+      <option>High → Low</option>
+      <option>Low → High</option>
+    </select>
+
+    <select>
+      <option>Distance</option>
+      <option>Near → Far</option>
+      <option>Far → Near</option>
+    </select>
+
+    <select>
+      <option>Block</option>
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+      <option>H</option>
+    </select>
+  </div>
+</div>
+
+<div class="page-wrapper">
+  <h2 class="page-title">Available Deliveries</h2>
+
+  <div class="order-grid" id="orders"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/deliver.js"></script>
+
+</body>
+</html>

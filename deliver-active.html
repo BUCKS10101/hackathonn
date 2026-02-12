@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Active Delivery</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div style="display:flex;align-items:center;gap:15px;">
+    <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
+    <div class="logo" onclick="goHome()">CampusLink</div>
+  </div>
+</div>
+
+<div class="page-wrapper">
+
+  <h2 class="page-title">Delivery in Progress</h2>
+
+  <div class="panel">
+
+    <h3>Navigate to Destination</h3>
+
+    <!-- FALLBACK MAP -->
+    <div class="fake-map">
+      <div class="route"></div>
+      <div class="start">You</div>
+      <div class="end">Block</div>
+      <div class="runner"></div>
+    </div>
+
+    <!-- OTP -->
+    <div class="otp-box">
+      <p><b>Enter Customer OTP</b></p>
+      <input id="otpInput" placeholder="Enter OTP">
+      <br>
+      <button onclick="verifyOTP()">Complete Delivery</button>
+      <p id="otpStatus" class="otp-status"></p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- JS -->
+<script src="js/otp.js"></script>
+
+<script>
+function goHome() {
+  window.location.href = "dashboard.html";
+}
+
+function goBack() {
+  window.history.back();
+}
+</script>
+
+</body>
+</html>

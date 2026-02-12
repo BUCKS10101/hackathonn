@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Role</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="center">
+
+  <div class="card">
+    <h2>What are you here to do?</h2>
+
+    <button onclick="goOrder()">Order</button>
+    <button onclick="goDeliver()">Deliver</button>
+  </div>
+
+  <script>
+    function goOrder() {
+      window.location.href = "place.html";
+    }
+
+    function goDeliver() {
+      window.location.href = "deliver-dashboard.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f6f6f2;
+  color: #222;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 14px 30px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.navbar .logo {
+  font-weight: 700;
+  color: #b59b63;
+  margin-right: 40px;
+}
+
+.navbar a {
+  margin-right: 25px;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+}
+
+.navbar input {
+  margin-left: auto;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+}
+
+/* CENTER CARD */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  width: 360px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  text-align: center;
+  color: #b59b63;
+}
+
+.card p {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #b59b63;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* DASHBOARD */
+.container {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.panel {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* CHAT */
+.chat-box {
+  height: 200px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  margin-top: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+}
+
+.chat-input button {
+  width: 80px;
+}
+
+/* ORDER FLOW */
+.steps {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.step {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ddd;
+  margin: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.step.active {
+  background: #b59b63;
+  color: white;
+}
+
+.option {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.option.selected {
+  border-color: #b59b63;
+  background: #fdfaf4;
+}
+/* FILTER BAR */
+.filter-bar {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}
+
+.filter-bar select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* PAGE */
+.page-wrapper {
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+/* ORDER GRID */
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+/* ORDER CARD (PLACARD) */
+/* ORDER CARD (PLACARD) */
+.order-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  border-color: #b59b63;
+  box-shadow: 0 14px 30px rgba(181,155,99,0.25);
+}
+
+/* CARD CONTENT */
+.order-card h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: #222;
+}
+
+.order-meta {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.order-tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tag {
+  background: #f6f6f2;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+}
+
+.tag.tip {
+  background: #fdf3e0;
+  color: #8a6b2f;
+}
+/* FALLBACK MAP */
+.fake-map {
+  position: relative;
+  height: 280px;
+  background: linear-gradient(135deg, #f6f6f2, #ece9df);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+/* ROUTE LINE */
+.route {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+  background: linear-gradient(to right, #b59b63, #e0c38a);
+  border-radius: 2px;
+}
+
+/* START & END */
+.start, .end {
+  position: absolute;
+  top: calc(50% - 18px);
+  width: 60px;
+  height: 36px;
+  background: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.start {
+  left: 6%;
+}
+
+.end {
+  right: 6%;
+}
+
+/* MOVING DELIVERY DOT */
+.runner {
+  position: absolute;
+  top: calc(50% - 8px);
+  left: 10%;
+  width: 16px;
+  height: 16px;
+  background: #b59b63;
+  border-radius: 50%;
+  animation: move 6s linear infinite;
+}
+
+@keyframes move {
+  0% { left: 10%; }
+  100% { left: 90%; }
+}

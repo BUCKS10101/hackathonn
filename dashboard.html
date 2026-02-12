@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="logo">CampusLink</div>
+  <a href="#">Home</a>
+  <a href="place.html">Post Request</a>
+  <a href="#">My Orders</a>
+  <a href="#">Profile</a>
+  <input placeholder="Search orders...">
+</div>
+
+<div class="container">
+
+  <div class="panel">
+    <h3>🍔 One Food</h3>
+    <p>2x Chicken Burger + Fries</p>
+    <p><strong>₹240</strong></p>
+    <p>Status: <b>Picked Up</b></p>
+  </div>
+
+  <div class="panel">
+    <h3>Chat with Deliverer</h3>
+    <div class="chat-box" id="chat">
+      <div>Arjun: Order accepted 👍</div>
+      <div>Arjun: ETA 15 mins</div>
+    </div>
+
+    <div class="chat-input">
+      <input id="msg" placeholder="Type your message">
+      <button onclick="send()">Send</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
