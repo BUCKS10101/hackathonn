@@ -23,8 +23,6 @@ function initMap() {
   }, 2000);
 }
 
-window.onload = initMap;
-
 // chat
 function send() {
   const input = document.getElementById("msg");
@@ -36,3 +34,5 @@ function send() {
   input.value = "";
   chat.scrollTop = chat.scrollHeight;
 }
+
+
