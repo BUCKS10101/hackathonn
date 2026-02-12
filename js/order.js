@@ -1,32 +1,70 @@
-let selectedRestaurant = "";
-let cart = [];
+// LOAD cart from storage
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+// SELECT RESTAURANT
 function selectRestaurant(name) {
-  selectedRestaurant = name;
   localStorage.setItem("restaurant", name);
   window.location.href = "menu.html";
 }
 
-function addItem(item, price) {
-  cart.push({ item, price });
-  localStorage.setItem("cart", JSON.stringify(cart));
+// ADD ITEM
+function addItem(name, price) {
+  price = Number(price);
+
+  const existing = cart.find(i => i.name === name);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      name,
+      price,
+      qty: 1
+    });
+  }
+
+  saveCart();
   renderCart();
 }
 
+// RENDER CART
 function renderCart() {
   const box = document.getElementById("cart");
   const totalBox = document.getElementById("total");
-  let total = 0;
+
+  if (!box || !totalBox) return;
 
   box.innerHTML = "";
-  cart.forEach(i => {
-    total += i.price;
-    box.innerHTML += `<div>${i.item} - ₹${i.price}</div>`;
+  let total = 0;
+
+  cart.forEach(item => {
+    const subtotal = item.price * item.qty;
+    total += subtotal;
+
+    box.innerHTML += `
+      <div>
+        ${item.name} x${item.qty} - ₹${subtotal}
+      </div>
+    `;
   });
 
   totalBox.textContent = "Total: ₹" + total;
 }
 
-function checkout() {
-  window.location.href = "checkout.html";
+// SAVE
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
+
+// CHECKOUT
+function checkout() {
+  if (cart.length === 0) {
+    console.log("Cart empty");
+    return;
+  }
+
+  window.location.href = "location.html";
+}
+
+// Run when page loads
+renderCart();
