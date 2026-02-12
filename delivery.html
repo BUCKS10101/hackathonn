@@ -1,97 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Live Delivery</title>
+<meta charset="UTF-8">
+<title>Live Delivery</title>
 
-  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
-  <style>
-    #map {
-      width: 100%;
-      height: 300px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
+<style>
+#map {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
 
-    .otp-box {
-      text-align: center;
-      margin: 15px 0;
-    }
+.order-summary {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  font-size: 14px;
+}
 
-    .otp {
-      font-size: 22px;
-      font-weight: bold;
-      letter-spacing: 6px;
-      margin: 10px 0;
-    }
+.otp-box {
+  text-align: center;
+  margin: 15px 0;
+}
 
-    .otp-box input {
-      width: 60%;
-      padding: 10px;
-      text-align: center;
-      margin-bottom: 10px;
-    }
+.otp {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 6px;
+  margin: 10px 0;
+}
 
-    .otp-status {
-      font-size: 13px;
-      margin-top: 5px;
-    }
-  </style>
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #b59b63;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  display: none;
+  z-index: 999;
+}
+</style>
 </head>
 
 <body>
-    <div class="navbar">
+
+<!-- NAVBAR -->
+<div class="navbar">
   <div style="display:flex;align-items:center;gap:15px;">
     <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
     <div class="logo" onclick="goHome()">CampusLink</div>
   </div>
 </div>
 
+<!-- MAIN CONTENT -->
+<div class="container">
 
-  <!-- NAVBAR -->
-  <div class="navbar">
-    <div class="logo">CampusLink</div>
-  </div>
+  <!-- LEFT PANEL -->
+  <div class="panel">
 
-  <!-- MAIN CONTENT -->
-  <div class="container">
+    <h3>Live Tracking</h3>
 
-    <!-- LEFT PANEL -->
-    <div class="panel">
-      <h3>Live Tracking</h3>
+    <div id="map"></div>
 
-      <div id="map"></div>
-
-      <div class="otp-box">
-        <p><b>Delivery OTP</b></p>
-        <div class="otp">483921</div>
-
-        <button onclick="verifyOTP()">Confirm Delivery</button>
-
-        <p id="otpStatus" class="otp-status"></p>
-
-        <p style="font-size:12px;color:#666">
-          Share OTP only after receiving your order
-        </p>
-      </div>
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary">
+      <h4>Order Summary</h4>
+      <p>From: DC Cafe</p>
+      <p>To: S Block</p>
+      <p>Total: ₹70</p>
+      <p id="distance">Distance: Calculating...</p>
+      <p id="eta">ETA: Calculating...</p>
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="panel">
-      <h3>Chat with Deliverer</h3>
-
-      <div class="chat-box" id="chat">
-        <div>Arjun: On the way 👍</div>
-      </div>
-
-      <div class="chat-input">
-        <input id="msg" placeholder="Type your message">
-        <button onclick="send()">Send</button>
-      </div>
+    <!-- OTP -->
+    <div class="otp-box">
+      <p><b>Delivery OTP</b></p>
+      <div class="otp">483921</div>
+      <button onclick="verifyOTP()">Confirm Delivery</button>
+      <p id="otpStatus"></p>
+      <p style="font-size:12px;color:#666">
+        Share OTP only after receiving your order
+      </p>
     </div>
 
   </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel">
+    <h3>Chat with Deliverer</h3>
+
+    <div class="chat-box" id="chat">
+      <div>Arjun: On the way 👍</div>
+    </div>
+
+    <div class="chat-input">
+      <input id="msg" placeholder="Type your message">
+      <button onclick="send()">Send</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- NOTIFICATION -->
+<div id="notification" class="notification">
+  Delivery Partner Assigned ✅
+</div>
+
 <!-- JS FILES -->
 <script src="js/delivery.js"></script>
 <script src="js/otp.js"></script>
