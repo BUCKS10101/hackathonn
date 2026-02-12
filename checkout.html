@@ -1,21 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Checkout</title>
+  <title>CampusLink Pay</title>
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body {
+      background: #f4f4f4;
+      font-family: sans-serif;
+    }
+
+    .gateway {
+      width: 360px;
+      margin: 80px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .amount {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .upi-input {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .pay-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #b59b63;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .processing {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body class="center">
 
-<div class="card">
-  <h3>UPI Payment</h3>
-  <p>Pay to: campuslink@upi</p>
-  <p>Tip (auto): ₹40</p>
+<body>
 
-  <button onclick="pay()">Proceed</button>
+<div class="gateway" id="paymentBox">
+
+  <h3>CampusLink Pay</h3>
+
+  <div class="amount">₹70</div>
+  <p>Includes ₹40 auto-tip</p>
+
+  <input class="upi-input" placeholder="Enter UPI ID (demo@upi)">
+
+  <button class="pay-btn" onclick="pay()">Pay Now</button>
+
+  <div class="processing" id="status"></div>
+
 </div>
 
 <script>
 function pay() {
+  const status = document.getElementById("status");
+  status.innerText = "Processing payment...";
+
+  setTimeout(() => {
+    document.getElementById("paymentBox").innerHTML = `
+      <h3>Payment Successful ✅</h3>
+      <p>Transaction ID: CL${Math.floor(Math.random()*1000000)}</p>
+      <button class="pay-btn" onclick="goNext()">Continue</button>
+    `;
+  }, 2000);
+}
+
+function goNext() {
   window.location.href = "status.html";
 }
 </script>
