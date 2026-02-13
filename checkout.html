@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>CampusLink Pay</title>
   <link rel="stylesheet" href="css/style.css">
@@ -16,7 +17,7 @@
       background: white;
       padding: 25px;
       border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .amount {
@@ -54,39 +55,78 @@
 
 <body>
 
-<div class="gateway" id="paymentBox">
+  <div class="gateway" id="paymentBox">
 
-  <h3>CampusLink Pay</h3>
+    <h3>CampusLink Pay</h3>
 
-  <div class="amount">₹70</div>
-  <p>Includes ₹40 auto-tip</p>
+    <div class="amount">₹70</div>
+    <p>Includes ₹40 auto-tip</p>
 
-  <input class="upi-input" placeholder="Enter UPI ID (demo@upi)">
+    <input class="upi-input" placeholder="Enter UPI ID (demo@upi)">
 
-  <button class="pay-btn" onclick="pay()">Pay Now</button>
+    <button class="pay-btn" onclick="pay()">Pay Now</button>
 
-  <div class="processing" id="status"></div>
+    <div class="processing" id="status"></div>
 
-</div>
+  </div>
 
-<script>
-function pay() {
-  const status = document.getElementById("status");
-  status.innerText = "Processing payment...";
+  <script>
+    async function pay() {
+      const status = document.getElementById("status");
+      status.innerText = "Processing payment...";
 
-  setTimeout(() => {
-    document.getElementById("paymentBox").innerHTML = `
-      <h3>Payment Successful ✅</h3>
-      <p>Transaction ID: CL${Math.floor(Math.random()*1000000)}</p>
-      <button class="pay-btn" onclick="goNext()">Continue</button>
-    `;
-  }, 2000);
-}
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const restaurant = localStorage.getItem("restaurant") || "Campus Eatery";
+      const user = JSON.parse(localStorage.getItem("user")) || { name: "Guest", email: "guest@example.com" };
+      const deliveryLocation = JSON.parse(localStorage.getItem("deliveryLocation")) || { block: "Unknown" };
 
-function goNext() {
-  window.location.href = "status.html";
-}
-</script>
+      if (cart.length === 0) {
+        status.innerText = "Cart is empty!";
+        return;
+      }
+
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      const orderData = {
+        userId: user.userId, // KEY FIX: data saved from auth has .userId property
+        restaurant: restaurant,
+        items: cart,
+        totalAmount: totalAmount + 40,
+        status: "paid",
+        deliveryLocation: deliveryLocation
+      };
+
+      try {
+        const response = await fetch("http://localhost:5001/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem("currentOrderId", data._id); // Assuming backend returns _id
+
+          document.getElementById("paymentBox").innerHTML = `
+          <h3>Payment Successful ✅</h3>
+          <p>Order ID: ${data._id}</p>
+          <button class="pay-btn" onclick="goNext()">Track Order</button>
+        `;
+        } else {
+          status.innerText = "Payment failed: " + (data.message || "Unknown error");
+        }
+      } catch (error) {
+        console.error(error);
+        status.innerText = "Server connection error";
+      }
+    }
+
+    function goNext() {
+      window.location.href = "status.html";
+    }
+  </script>
 
 </body>
+
 </html>

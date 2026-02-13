@@ -19,8 +19,35 @@ document.getElementById("preview").innerHTML = `
   <button onclick="confirm()">Confirm Delivery</button>
 `;
 
-function confirm() {
-  window.location.href = "deliver-active.html";
+async function confirm() {
+  try {
+    const response = await fetch("http://localhost:5001/api/delivery/assign", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        // Minimal data for now, treating 'o' as delivery details
+        orderId: null, // We don't have a real order ID in mongo yet
+        restaurant: o.restaurant,
+        block: o.block
+      })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem("currentDeliveryId", data.deliveryId);
+      // For demo purposes, alert the OTP so we know what to enter
+      alert(`Delivery Assigned! OTP (Mock Customer View): ${data.otp}`);
+      window.location.href = "deliver-active.html";
+    } else {
+      alert("Failed to assign delivery");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error");
+  }
 }
 </script>
 

@@ -9,7 +9,14 @@ const deliverySchema = new mongoose.Schema(
       type: String,
       enum: ["assigned", "on_the_way", "completed"],
       default: "assigned"
-    }
+    },
+    messages: [
+      {
+        sender: String, // "user" or "driver"
+        text: String,
+        timestamp: { type: Date, default: Date.now }
+      }
+    ]
   },
   { timestamps: true }
 );

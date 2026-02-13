@@ -1,138 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Live Delivery</title>
+  <meta charset="UTF-8">
+  <title>Live Delivery</title>
 
-<link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 
-<style>
-#map {
-  width: 100%;
-  height: 300px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    #map {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      z-index: 1;
+      /* Ensure map doesn't overlap incorrectly */
+    }
 
-.order-summary {
-  margin-bottom: 15px;
-  padding: 15px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  font-size: 14px;
-}
+    /* ... existing styles ... */
 
-.otp-box {
-  text-align: center;
-  margin: 15px 0;
-}
+    .order-summary {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      font-size: 14px;
+    }
 
-.otp {
-  font-size: 22px;
-  font-weight: bold;
-  letter-spacing: 6px;
-  margin: 10px 0;
-}
+    .otp-box {
+      text-align: center;
+      margin: 15px 0;
+    }
 
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #b59b63;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 10px;
-  display: none;
-  z-index: 999;
-}
-</style>
+    .otp {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 6px;
+      margin: 10px 0;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #b59b63;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      display: none;
+      z-index: 999;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div style="display:flex;align-items:center;gap:15px;">
-    <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
-    <div class="logo" onclick="goHome()">CampusLink</div>
-  </div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="container">
-
-  <!-- LEFT PANEL -->
-  <div class="panel">
-
-    <h3>Live Tracking</h3>
-
-    <div id="map"></div>
-
-    <!-- ORDER SUMMARY -->
-    <div class="order-summary">
-      <h4>Order Summary</h4>
-      <p>From: DC Cafe</p>
-      <p>To: S Block</p>
-      <p>Total: ₹70</p>
-      <p id="distance">Distance: Calculating...</p>
-      <p id="eta">ETA: Calculating...</p>
-    </div>
-
-    <!-- OTP -->
-    <div class="otp-box">
-      <p><b>Delivery OTP</b></p>
-      <div class="otp">483921</div>
-      <button onclick="verifyOTP()">Confirm Delivery</button>
-      <p id="otpStatus"></p>
-      <p style="font-size:12px;color:#666">
-        Share OTP only after receiving your order
-      </p>
-    </div>
-
-  </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="panel">
-    <h3>Chat with Deliverer</h3>
-
-    <div class="chat-box" id="chat">
-      <div>Arjun: On the way 👍</div>
-    </div>
-
-    <div class="chat-input">
-      <input id="msg" placeholder="Type your message">
-      <button onclick="send()">Send</button>
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div style="display:flex;align-items:center;gap:15px;">
+      <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
+      <div class="logo" onclick="goHome()">CampusLink</div>
     </div>
   </div>
 
-</div>
+  <!-- MAIN CONTENT -->
+  <div class="container">
 
-<!-- NOTIFICATION -->
-<div id="notification" class="notification">
-  Delivery Partner Assigned ✅
-</div>
+    <!-- LEFT PANEL -->
+    <div class="panel">
 
-<!-- JS FILES -->
-<script src="js/delivery.js"></script>
-<script src="js/otp.js"></script>
+      <h3>Live Tracking</h3>
 
-<!-- GOOGLE MAPS -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbXs6xBbPJWltuodbUM6PKo0TsmW_G4Q4&callback=initMap" async defer></script>
+      <div id="map"></div>
 
-<script>
-function goHome() {
-  window.location.href = "dashboard.html";
-}
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <h4>Order Summary</h4>
+        <p>From: DC Cafe</p>
+        <p>To: S Block</p>
+        <p>Total: ₹70</p>
+        <p id="distance">Distance: Calculating...</p>
+        <p id="eta">ETA: Calculating...</p>
+      </div>
 
-function goBack() {
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    goHome();
-  }
-}
-</script>
+      <!-- OTP -->
+      <div class="otp-box">
+        <p><b>Delivery OTP</b></p>
+        <div class="otp" id="otpDisplay">---</div>
+        <script>
+          document.getElementById("otpDisplay").innerText = localStorage.getItem("deliveryOtp") || "---";
+        </script>
+        <script>
+          document.getElementById("otpDisplay").innerText = localStorage.getItem("deliveryOtp") || "---";
+        </script>
+        <!-- Button Removed: Customer waits for driver to confirm -->
+        <p id="otpStatus" style="margin-top:10px; font-weight:bold; color:#b59b63;">Waiting for Driver...</p>
+        <p style="font-size:12px;color:#666">
+          Share OTP only after receiving your order
+        </p>
+        <div style="margin-top:15px; border-top:1px dashed #ddd; padding-top:10px;">
+          <a href="deliver-active.html" target="_blank"
+            style="font-size:13px; color:#b59b63; text-decoration:none; border:1px solid #b59b63; padding:5px 10px; border-radius:4px;">
+            Open Driver View (Simulate) ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+      <h3>Chat with Deliverer</h3>
+
+      <div class="chat-box" id="chat">
+        <!-- Messages will appear here -->
+      </div>
+
+      <div class="chat-input" style="display:flex; flex-direction:column; gap:5px;">
+        <div style="display:flex; gap:5px;">
+          <input id="msg" placeholder="Type your message" style="flex:1;">
+          <button onclick="send()">Send</button>
+        </div>
+        <button onclick="shareOTP()" style="background:#555; font-size:12px; padding:5px;">Share OTP with
+          Driver</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Chat Logic
+    const chatBox = document.getElementById("chat");
+    const deliveryId = localStorage.getItem("currentDeliveryId");
+
+    // Poll for messages every 1 second for "live" feel
+    setInterval(loadMessages, 1000);
+
+    async function loadMessages() {
+      if (!deliveryId) return;
+      try {
+        const res = await fetch(`http://localhost:5001/api/delivery/${deliveryId}/chat`);
+        const messages = await res.json();
+
+        chatBox.innerHTML = "";
+        messages.forEach(msg => {
+          const div = document.createElement("div");
+          div.className = msg.sender === "user" ? "msg-sent" : "msg-received";
+          div.style.textAlign = msg.sender === "user" ? "right" : "left";
+          div.style.margin = "5px 0";
+          div.style.color = msg.sender === "user" ? "#b59b63" : "black";
+          div.innerHTML = `<b>${msg.sender === "user" ? "You" : "Driver"}:</b> ${msg.text}`;
+          chatBox.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Chat error", err);
+      }
+    }
+
+    async function shareOTP() {
+      const otp = localStorage.getItem("deliveryOtp");
+      if (!otp) return alert("OTP not ready yet");
+
+      try {
+        await fetch(`http://localhost:5001/api/delivery/${deliveryId}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sender: "user", text: `Here is the OTP: ${otp}` })
+        });
+        loadMessages();
+      } catch (err) {
+        alert("Failed to share OTP");
+      }
+    }
+
+    async function send() {
+      const input = document.getElementById("msg");
+      const text = input.value;
+      if (!text) return;
+
+      try {
+        await fetch(`http://localhost:5001/api/delivery/${deliveryId}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sender: "user", text })
+        });
+        input.value = "";
+        loadMessages(); // Refresh immediately
+      } catch (err) {
+        alert("Failed to send");
+      }
+    }
+  </script>
+
+  <!-- NOTIFICATION -->
+  <div id="notification" class="notification">
+    Delivery Partner Assigned ✅
+  </div>
+
+  <!-- MAP SCRIPT -->
+  <script src="js/delivery.js"></script>
+  <script src="js/otp.js"></script>
+
+  <script>
+    // Initialize map when page loads
+    window.onload = function () {
+      initMap();
+      pollStatus();
+    };
+
+    function pollStatus() {
+      const deliveryId = localStorage.getItem("currentDeliveryId");
+      if (!deliveryId) return;
+
+      setInterval(async () => {
+        try {
+          const res = await fetch(`http://localhost:5001/api/delivery/${deliveryId}`);
+          const data = await res.json();
+          if (data.status === 'completed') {
+            document.getElementById("otpStatus").innerText = "Delivery Completed! ✅";
+            document.getElementById("otpStatus").style.color = "green";
+            localStorage.removeItem("deliveryOtp"); // Clear OTP
+            setTimeout(() => {
+              window.location.href = "dashboard.html"; // Redirect
+            }, 3000);
+          }
+        } catch (e) { console.error(e); }
+      }, 2000);
+    }
+  </script>
+
+  <script>
+    function goHome() {
+      window.location.href = "dashboard.html";
+    }
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        goHome();
+      }
+    }
+  </script>
 
 </body>
+
 </html>

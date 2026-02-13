@@ -1,55 +1,42 @@
 require("dotenv").config();
-
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
-const User = require("./models/User"); // 👈 import user model
+const mongoose = require("mongoose");
+
+const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const deliveryRoutes = require("./routes/deliveryRoutes");
 
 const app = express();
 
-// Middleware
+const path = require("path");
+
 app.use(cors());
 app.use(express.json());
 
-// Test route
-app.get("/", (req, res) => {
+// Serve static files from the parent directory (frontend)
+app.use(express.static(path.join(__dirname, "../")));
+
+// API Test route (optional, but static index.html will take precedence if it exists)
+app.get("/api-status", (req, res) => {
   res.send("CampusLink API is running...");
 });
 
-// ✅ REGISTER ROUTE
-app.post("/register", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/delivery", deliveryRoutes);
 
-    console.log("Incoming Data:", req.body);
-
-    const newUser = new User({
-      name,
-      email,
-      password
-    });
-
-    await newUser.save();
-
-    res.status(201).json({ message: "User registered successfully" });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// MongoDB Connection
+// DB connect
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
-
-    const PORT = 5001;
-
+    const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
-  .catch((error) => {
-    console.error("MongoDB connection failed:", error.message);
+  .catch((err) => {
+    console.error("MongoDB connection error:", err.message);
   });

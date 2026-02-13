@@ -1,10 +1,10 @@
 async function register() {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
-  const password = document.getElementById("pass").value;
+  const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch("http://localhost:5001/register", {
+    const response = await fetch("http://localhost:5001/api/users/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -20,6 +20,7 @@ async function register() {
     console.log(data);
 
     if (response.ok) {
+      localStorage.setItem("user", JSON.stringify(data));
       alert("User registered successfully!");
       window.location.href = "role.html";
     } else {

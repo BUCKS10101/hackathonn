@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Active Delivery</title>
@@ -8,55 +9,115 @@
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div style="display:flex;align-items:center;gap:15px;">
-    <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
-    <div class="logo" onclick="goHome()">CampusLink</div>
-  </div>
-</div>
-
-<div class="page-wrapper">
-
-  <h2 class="page-title">Delivery in Progress</h2>
-
-  <div class="panel">
-
-    <h3>Navigate to Destination</h3>
-
-    <!-- FALLBACK MAP -->
-    <div class="fake-map">
-      <div class="route"></div>
-      <div class="start">You</div>
-      <div class="end">Block</div>
-      <div class="runner"></div>
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div style="display:flex;align-items:center;gap:15px;">
+      <span onclick="goBack()" style="cursor:pointer;font-size:18px;">←</span>
+      <div class="logo" onclick="goHome()">CampusLink</div>
     </div>
-
-    <!-- OTP -->
-    <div class="otp-box">
-      <p><b>Enter Customer OTP</b></p>
-      <input id="otpInput" placeholder="Enter OTP">
-      <br>
-      <button onclick="verifyOTP()">Complete Delivery</button>
-      <p id="otpStatus" class="otp-status"></p>
-    </div>
-
   </div>
 
-</div>
+  <div class="page-wrapper">
 
-<!-- JS -->
-<script src="js/otp.js"></script>
+    <h2 class="page-title">Delivery in Progress</h2>
 
-<script>
-function goHome() {
-  window.location.href = "dashboard.html";
-}
+    <div class="panel">
 
-function goBack() {
-  window.history.back();
-}
-</script>
+      <h3>Navigate to Destination</h3>
+
+      <!-- FALLBACK MAP -->
+      <div class="fake-map">
+        <div class="route"></div>
+        <div class="start">You</div>
+        <div class="end">Block</div>
+        <div class="runner"></div>
+      </div>
+
+      <!-- OTP -->
+      <div class="otp-box">
+        <p><b>Enter Customer OTP</b></p>
+        <input id="otpInput" placeholder="Enter OTP">
+        <br>
+        <button onclick="verifyOTP()">Complete Delivery</button>
+        <p id="otpStatus" class="otp-status"></p>
+      </div>
+
+      <!-- CHAT PANEL -->
+      <h3>Chat with Customer</h3>
+      <div class="chat-box" id="chat"
+        style="height: 200px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+        <!-- Messages appear here -->
+      </div>
+      <div class="chat-input" style="display: flex; gap: 5px;">
+        <input id="msg" placeholder="Type message..." style="flex: 1; padding: 10px;">
+        <button onclick="sendChat()"
+          style="padding: 10px; background: #b59b63; color: white; border: none;">Send</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="js/otp.js"></script>
+
+  <script>
+    // Driver Chat Logic
+    const chatBox = document.getElementById("chat");
+    const deliveryId = localStorage.getItem("currentDeliveryId");
+
+    setInterval(loadMessages, 1000);
+
+    async function loadMessages() {
+      if (!deliveryId) return;
+      try {
+        const res = await fetch(`http://localhost:5001/api/delivery/${deliveryId}/chat`);
+        const messages = await res.json();
+
+        chatBox.innerHTML = "";
+        messages.forEach(msg => {
+          const div = document.createElement("div");
+          // Driver view: "driver" is self (right), "user" is other (left)
+          const isMe = msg.sender === "driver";
+
+          div.style.textAlign = isMe ? "right" : "left";
+          div.style.margin = "5px 0";
+          div.style.color = isMe ? "#b59b63" : "black";
+          div.innerHTML = `<b>${isMe ? "You" : "Customer"}:</b> ${msg.text}`;
+          chatBox.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Chat error", err);
+      }
+    }
+
+    async function sendChat() {
+      const input = document.getElementById("msg");
+      const text = input.value;
+      if (!text) return;
+
+      try {
+        await fetch(`http://localhost:5001/api/delivery/${deliveryId}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sender: "driver", text }) // Sender is driver
+        });
+        input.value = "";
+        loadMessages();
+      } catch (err) {
+        alert("Failed to send");
+      }
+    }
+
+    function goHome() {
+      window.location.href = "dashboard.html";
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
 
 </body>
+
 </html>
